@@ -3,7 +3,7 @@
 
 from openai import OpenAI
 
-API_KEY = "sk-3ad1591e9d034704bbe4aa0407fa3edc"  # 替换这里
+API_KEY = "key"  # 替换这里
 
 client = OpenAI(api_key=API_KEY, base_url="https://api.deepseek.com")
 

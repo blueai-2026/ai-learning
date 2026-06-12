@@ -111,6 +111,10 @@ if chunks:
 else:
     st.sidebar.error("❌ 文档未找到")
 
+# 显示对话轮数
+turn_count = sum(1 for msg in st.session_state.messages if msg["role"] == "user")
+st.sidebar.info(f"💬 当前对话：{turn_count} 轮")
+
 # 切换部门时清空对话
 if "current_dept" not in st.session_state:
     st.session_state.current_dept = selected
