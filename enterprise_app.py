@@ -78,20 +78,47 @@ st.markdown("""
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #1a3a5c 0%, #1e4d7b 40%, #1b3d60 100%);
     }
-    [data-testid="stSidebar"] .stMarkdown,
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] .stRadio label {
+    /* 所有文字及标签统一为浅色 */
+    [data-testid="stSidebar"],
+    [data-testid="stSidebar"] * {
+        color: #e2e8f0 !important;
+    }
+    /* 输入框内文字保持深色 */
+    [data-testid="stSidebar"] input {
+        color: #1e293b !important;
+    }
+    [data-testid="stSidebar"] h5 {
         color: #ffffff !important;
+    }
+    /* Radio 按钮选中态加强 */
+    [data-testid="stSidebar"] .stRadio [data-testid="stMarkdownContainer"] label {
+        color: #ffffff !important;
+        font-weight: 500;
     }
     [data-testid="stSidebar"] .stSuccess {
         background-color: rgba(16, 185, 129, 0.2) !important;
         border: 1px solid rgba(16, 185, 129, 0.4) !important;
         color: #a7f3d0 !important;
     }
+    [data-testid="stSidebar"] .stSuccess p {
+        color: #a7f3d0 !important;
+    }
     [data-testid="stSidebar"] .stError {
         background-color: rgba(239, 68, 68, 0.2) !important;
         border: 1px solid rgba(239, 68, 68, 0.4) !important;
         color: #fca5a5 !important;
+    }
+    [data-testid="stSidebar"] .stError p {
+        color: #fca5a5 !important;
+    }
+    /* 退出按钮样式 */
+    [data-testid="stSidebar"] button {
+        color: #e2e8f0 !important;
+        border-color: rgba(255,255,255,0.25) !important;
+    }
+    [data-testid="stSidebar"] button:hover {
+        border-color: rgba(255,255,255,0.5) !important;
+        background: rgba(255,255,255,0.1) !important;
     }
 
     /* 侧边栏标题 */
