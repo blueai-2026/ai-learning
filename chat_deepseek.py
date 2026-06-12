@@ -1,9 +1,10 @@
 # 第二步：多轮对话
 # 可以连续和DeepSeek对话，输入 quit 退出
 
+import os
 from openai import OpenAI
 
-API_KEY = "key"  # 替换这里
+API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
 
 client = OpenAI(api_key=API_KEY, base_url="https://api.deepseek.com")
 

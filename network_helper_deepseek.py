@@ -1,9 +1,10 @@
 # 第三步：网络故障排查助手
 # 结合你的运维经验，这是一个真实有用的AI工具
 
+import os
 from openai import OpenAI
 
-API_KEY = "key"  # 替换这里
+API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
 
 client = OpenAI(api_key=API_KEY, base_url="https://api.deepseek.com")
 

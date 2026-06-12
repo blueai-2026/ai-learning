@@ -2,9 +2,10 @@
 # 运行前把下面的 YOUR_API_KEY 替换成你的真实key
 # 去 https://platform.deepseek.com 获取key
 
+import os
 from openai import OpenAI
 
-API_KEY = "key"  # 替换这里
+API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
 
 client = OpenAI(api_key=API_KEY, base_url="https://api.deepseek.com")
 

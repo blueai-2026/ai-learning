@@ -7,7 +7,7 @@ from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain.tools import tool
 from langchain_core.prompts import ChatPromptTemplate
 
-API_KEY = "key"  # 替换这里
+API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
 
 llm = ChatOpenAI(
     model="deepseek-chat",
