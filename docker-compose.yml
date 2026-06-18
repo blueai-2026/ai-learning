@@ -1,0 +1,50 @@
+# 企业知识库系统 —— 多服务架构
+# 对应 JD 要求：Docker、微服务、高可用
+
+version: "3.8"
+
+services:
+  # 1. FastAPI 后端（知识库 + LLM 问答接口）
+  api:
+    build: .
+    container_name: kb-api
+    ports:
+      - "8000:8000"
+    environment:
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./docs:/app/docs
+      - ./chroma_db:/app/chroma_db
+    command: python api.py
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # 2. Streamlit 前端（Web 界面）
+  web:
+    build: .
+    container_name: kb-web
+    ports:
+      - "8501:8501"
+    environment:
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+    volumes:
+      - ./docs:/app/docs
+      - ./chroma_db:/app/chroma_db
+    command: streamlit run enterprise_app.py --server.address 0.0.0.0
+    restart: unless-stopped
+
+  # 3. Redis 缓存层
+  redis:
+    image: redis:7-alpine
+    container_name: kb-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped

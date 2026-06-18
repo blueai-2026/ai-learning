@@ -5,7 +5,7 @@ from langchain_openai import ChatOpenAI
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain.tools import tool
 from langchain_core.prompts import ChatPromptTemplate
-from openai import OpenAI
+from retriever import load_and_index, hybrid_search, get_stats
 
 API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
 
@@ -16,24 +16,25 @@ llm = ChatOpenAI(
     base_url="https://api.deepseek.com",
 )
 
-# 加载知识库
-with open("docs/故障案例.txt", "r", encoding="utf-8") as f:
-    content = f.read()
-chunks = [c.strip() for c in content.split("\n\n") if c.strip()]
-
-def find_relevant(question, chunks, top_n=2):
-    keywords = question.replace("，", " ").replace("。", " ").split()
-    scored = [(sum(1 for kw in keywords if kw in c), c) for c in chunks]
-    scored.sort(reverse=True)
-    return [c for _, c in scored[:top_n]]
+# 建立向量索引
+DOCS = {
+    "IT": "docs/故障案例.txt",
+    "HR": "docs/hr.txt",
+    "行政": "docs/admin.txt",
+    "客服": "docs/service.txt",
+    "销售": "docs/sales.txt",
+}
+load_and_index(DOCS)
+stats = get_stats()
+print(f"向量库就绪：{stats['total_chunks']} 个片段")
 
 # 定义工具
 @tool
 def search_knowledge_base(query: str) -> str:
-    """从IT故障知识库中搜索相关解决方案"""
-    relevant = find_relevant(query, chunks)
+    """从IT故障知识库中搜索相关解决方案（使用向量语义检索）"""
+    relevant = hybrid_search(query, top_n=2, department="IT")
     if relevant:
-        return "\n\n".join(relevant)
+        return "\n\n".join([r["content"] for r in relevant])
     return "知识库中没有找到相关信息"
 
 @tool
