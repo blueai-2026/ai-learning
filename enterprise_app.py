@@ -289,42 +289,14 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ========== 登录逻辑 ==========
+# ========== 登录逻辑（已跳过，方便演示） ==========
 if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-if "username" not in st.session_state:
-    st.session_state.username = ""
+    st.session_state.logged_in = True
+    st.session_state.username = "admin"
+    st.session_state.current_dept = "🖥️ IT部门"
 
-if not st.session_state.logged_in:
-    # 登录页也应用蓝白风格
-    st.markdown("""
-    <div style="max-width:420px; margin:4rem auto; text-align:center;">
-        <div style="font-size:3.5rem; margin-bottom:1rem;">🏢</div>
-        <h2 style="color:#1e3a5f; margin-bottom:0.3rem;">企业内部知识库</h2>
-        <p style="color:#64748b; margin-bottom:2rem; font-size:0.9rem;">请使用您的账号登录</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    col1, col2, col3 = st.columns([1, 1.2, 1])
-    with col2:
-        with st.container(border=True):
-            username = st.text_input("👤 用户名", placeholder="请输入用户名")
-            password = st.text_input("🔒 密码", type="password", placeholder="请输入密码")
-            if st.button("登 录", use_container_width=True, type="primary"):
-                if username in USERS and USERS[username]["password"] == password:
-                    st.session_state.logged_in = True
-                    st.session_state.username = username
-                    st.rerun()
-                else:
-                    st.error("用户名或密码错误")
-    st.stop()
-
-# ========== 已登录 ==========
-user = USERS[st.session_state.username]
-if user["departments"] == "all":
-    available_depts = list(DEPARTMENTS.keys())
-else:
-    available_depts = user["departments"]
+# ========== 直接进入（免登录，方便演示） ==========
+available_depts = list(DEPARTMENTS.keys())
 
 # ---- 侧边栏 ----
 with st.sidebar:
